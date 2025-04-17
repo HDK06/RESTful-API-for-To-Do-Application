@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Danh sách công việc</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Danh sách công việc</h1>
+        <button id="delete-all-btn" class="delete-all-btn">Xóa tất cả</button>
+      </div>
+
+      <div id="add-todo-form" class="add-todo-form">
+        <input
+          type="text"
+          id="new-todo-input"
+          placeholder="Thêm công việc mới..."
+        />
+        <button id="submit-add-btn" class="add-btn">Thêm</button>
+      </div>
+
+      <ul id="todo-list" class="todo-list">
+        <!-- Render todos from server directly -->
+        <% if(todos.length === 0) { %>
+        <li class="todo-item empty-list">Không có công việc nào</li>
+        <% } else { %> <% todos.forEach(function(todo) { %>
+        <li class="todo-item" data-id="<%= todo._id %>">
+          <input type="checkbox" <%= todo.completed ? 'checked' : '' %>>
+          <span class="title <%= todo.completed ? 'completed' : '' %>"
+            ><%= todo.title %></span
+          >
+          <button class="edit-btn">✏️</button>
+          <button class="delete-btn">🗑️</button>
+        </li>
+        <% }); %> <% } %>
+      </ul>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
