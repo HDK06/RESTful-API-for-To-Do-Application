@@ -45,7 +45,7 @@ exports.updateTodo = async (req, res, next) => {
       runValidators: true,
     });
 
-    //404: Không tìm thấy
+    //404: Không tìm thấy việc
     if (!todo) {
       return res.status(404).json({
         success: false,
