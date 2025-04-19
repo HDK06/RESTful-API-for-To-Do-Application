@@ -1,7 +1,7 @@
 {
   "name": "todolist-api",
   "version": "1.0.0",
-  "description": "A RESTful API for Todo List application using Node.js, Express and MongoDB",
+  "description": "A Todo List application using Node.js, Express and MongoDB",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
