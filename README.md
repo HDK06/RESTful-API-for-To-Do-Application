@@ -14,7 +14,7 @@ Dự án tuân theo kiến trúc MVC (Model-View-Controller):
 
 ```
 todo-app/
-├── public/            # Tệp tĩnh cho frontend
+├── public/            # Tệp cho frontend
 │   ├── style.css      # CSS
 │   └── app.js         # JavaScript frontend
 ├── views/             # Template EJS
