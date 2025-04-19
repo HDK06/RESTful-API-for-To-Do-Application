@@ -23,7 +23,7 @@ app.use("/api/todos", todoRoutes);
 
 app.get("/", async (req, res) => {
   try {
-    // Lấy tất cả công việc, sắp xếp theo thời gian (mới nhất trước)
+    // Lấy tất cả công việc, sắp xếp theo thời gian (mới nhất xếp trước)
     const todos = await Todo.find().sort({ updatedAt: -1 });
 
     res.render("index", { todos });
