@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const {
   getTodos,
-  getTodo,
   createTodo,
   updateTodo,
   deleteTodo,
@@ -11,6 +10,6 @@ const {
 
 router.route("/").get(getTodos).post(createTodo).delete(deleteAllTodos);
 
-router.route("/:id").get(getTodo).put(updateTodo).delete(deleteTodo);
+router.route("/:id").put(updateTodo).delete(deleteTodo);
 
 module.exports = router;

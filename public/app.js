@@ -1,43 +1,27 @@
-// Biến cờ để theo dõi xem DOMContentLoaded đã được xử lý chưa
-let hasInitialized = false;
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Kiểm tra xem script đã được khởi tạo chưa để tránh khởi tạo nhiều lần
-  if (hasInitialized) {
-    return;
-  }
-
-  // Đánh dấu đã khởi tạo
-  hasInitialized = true;
-
-  // API URL
   const apiUrl = "/api/todos";
 
-  // DOM Elements
   const todoList = document.getElementById("todo-list");
   const submitAddBtn = document.getElementById("submit-add-btn");
   const newTodoInput = document.getElementById("new-todo-input");
   const deleteAllBtn = document.getElementById("delete-all-btn");
 
-  // Thiết lập event listeners cho danh sách công việc sử dụng event delegation
   setupEventDelegation();
 
-  // Event Listeners
   submitAddBtn.addEventListener("click", addTodo);
   deleteAllBtn.addEventListener("click", deleteAllTodos);
 
-  // Thêm hỗ trợ phím Enter cho input
+  // Thêm bằng phím Enter
   newTodoInput.addEventListener("keyup", (e) => {
     if (e.key === "Enter") {
       addTodo();
     }
   });
 
-  // Thiết lập event delegation cho danh sách công việc
+  // Dùng event delegation cho danh sách công việc
   function setupEventDelegation() {
-    // Sử dụng event delegation cho todoList để xử lý tất cả các sự kiện
     todoList.addEventListener("click", (e) => {
-      // Xử lý sự kiện cho nút sửa
+      //Nút sửa
       if (
         e.target.classList.contains("edit-btn") ||
         e.target.closest(".edit-btn")
@@ -50,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
 
-      // Xử lý sự kiện cho nút xóa
+      //Nút xóa
       if (
         e.target.classList.contains("delete-btn") ||
         e.target.closest(".delete-btn")
@@ -63,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Xử lý sự kiện thay đổi cho checkboxes
+    //Checkboxes
     todoList.addEventListener("change", (e) => {
       if (e.target.type === "checkbox") {
         const todoItem = e.target.closest(".todo-item");
@@ -84,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Cập nhật trạng thái hoàn thành của công việc
+  //Trạng thái hoàn thành việc
   async function updateTodoStatus(id, completed) {
     try {
       const response = await fetch(`${apiUrl}/${id}`, {
@@ -107,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Add new todo
+  //Thêm việc
   async function addTodo() {
     const title = newTodoInput.value.trim();
 
@@ -129,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (data.success) {
         newTodoInput.value = "";
-        window.location.reload(); // Tải lại trang để hiển thị công việc mới
+        window.location.reload(); // Tải lại trang để hiện việc mới
       } else {
         alert("Không thể thêm công việc");
       }
@@ -139,11 +123,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Edit todo
+  //Sửa việc
   function editTodo(id, currentTitle) {
     const newTitle = prompt("Nhập nội dung công việc mới:", currentTitle);
 
-    if (newTitle === null) return; // User canceled
+    if (newTitle === null) return; //Hủy
 
     if (newTitle.trim() === "") {
       alert("Nội dung công việc không được để trống");
@@ -153,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
     updateTodo(id, { title: newTitle });
   }
 
-  // Update todo
+  //Cập nhật việc
   async function updateTodo(id, updates) {
     try {
       const response = await fetch(`${apiUrl}/${id}`, {
@@ -167,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
 
       if (data.success) {
-        window.location.reload(); // Tải lại trang để hiển thị thay đổi
+        window.location.reload(); // Tải lại trang để hiện thay đổi
       } else {
         alert("Không thể cập nhật công việc");
       }
@@ -177,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Delete todo
+  // Xóa việc
   async function deleteTodo(id) {
     if (!confirm("Bạn có chắc chắn muốn xóa công việc này?")) {
       return;
@@ -201,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Delete all todos
+  // Xóa tất cả việc
   async function deleteAllTodos() {
     if (!confirm("Bạn có chắc chắn muốn xóa tất cả công việc?")) {
       return;
@@ -215,6 +199,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
 
       if (data.success) {
+        if (data.data && data.data.message) {
+          alert(data.data.message);
+        }
         window.location.reload(); // Tải lại trang để cập nhật danh sách
       } else {
         alert("Không thể xóa tất cả công việc");

@@ -1,19 +1,16 @@
 # Ứng dụng Danh sách Công việc (Todo List)
 
-Một ứng dụng quản lý danh sách công việc đơn giản sử dụng Node.js, Express, MongoDB và EJS cho người mới học lập trình web.
+Ứng dụng quản lý danh sách công việc sử dụng Node.js, Express, MongoDB và EJS.
 
 ## Tính năng
 
 - Tạo, đọc, cập nhật và xóa các mục công việc
-- Cấu trúc công việc đơn giản với tiêu đề và trạng thái hoàn thành
-- Giao diện người dùng đẹp, dễ sử dụng
 - Đánh dấu công việc đã hoàn thành với gạch ngang
-- Xử lý lỗi cơ bản
-- Được thiết kế đơn giản cho người mới học Node.js
+- Sắp xếp công việc theo thời gian cập nhật
 
 ## Cấu trúc dự án
 
-Dự án tuân theo kiến trúc MVC (Model-View-Controller) đơn giản:
+Dự án tuân theo kiến trúc MVC (Model-View-Controller):
 
 ```
 todo-app/
@@ -21,7 +18,7 @@ todo-app/
 │   ├── style.css      # CSS
 │   └── app.js         # JavaScript frontend
 ├── views/             # Template EJS
-│   └── index.ejs      # Template chính
+│   └── index.ejs
 ├── src/
 │   ├── config/        # Cấu hình
 │   ├── controllers/   # Xử lý logic
@@ -29,15 +26,17 @@ todo-app/
 │   ├── models/        # Mô hình dữ liệu
 │   └── routes/        # Định nghĩa route
 ├── .env               # Biến môi trường
-├── package.json       # Phụ thuộc và script
-├── README.md          # Tài liệu dự án
+├── package.json
+├── README.md          # Tài liệu
 └── server.js          # Điểm khởi đầu
 ```
 
-## Yêu cầu
+## Công nghệ
 
 - Node.js
+- Express.js
 - MongoDB
+- EJS
 
 ## Cài đặt
 
@@ -80,96 +79,28 @@ Sau khi khởi động, truy cập ứng dụng tại: http://localhost:3001
 
 Ứng dụng có giao diện người dùng trực quan cho phép:
 
-- Xem danh sách tất cả công việc
+- Xem danh sách tất cả công việc (sắp xếp theo thời gian cập nhật mới nhất)
 - Thêm công việc mới
-- Đánh dấu công việc là đã hoàn thành (với gạch ngang)
+- Đánh dấu công việc là đã hoàn thành
 - Chỉnh sửa tiêu đề công việc
 - Xóa một công việc cụ thể
 - Xóa tất cả công việc
 
 ## API Endpoints
 
-| Phương thức | Endpoint       | Mô tả                    |
-| ----------- | -------------- | ------------------------ |
-| GET         | /api/todos     | Lấy tất cả công việc     |
-| GET         | /api/todos/:id | Lấy một công việc cụ thể |
-| POST        | /api/todos     | Tạo công việc mới        |
-| PUT         | /api/todos/:id | Cập nhật công việc       |
-| DELETE      | /api/todos/:id | Xóa một công việc        |
-| DELETE      | /api/todos     | Xóa tất cả công việc     |
+| Phương thức | Endpoint       | Mô tả                |
+| ----------- | -------------- | -------------------- |
+| GET         | /api/todos     | Lấy tất cả công việc |
+| POST        | /api/todos     | Tạo công việc mới    |
+| PUT         | /api/todos/:id | Cập nhật công việc   |
+| DELETE      | /api/todos/:id | Xóa một công việc    |
+| DELETE      | /api/todos     | Xóa tất cả công việc |
 
-## Ví dụ về Request và Response
+## Mô hình dữ liệu
 
-### Tạo công việc mới
+Schema của công việc bao gồm:
 
-**Request:**
-
-```http
-POST /api/todos
-Content-Type: application/json
-
-{
-  "title": "Hoàn thành dự án Node.js"
-}
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "_id": "60f7b0b3e8b9a8001c9f0b3a",
-    "title": "Hoàn thành dự án Node.js",
-    "completed": false,
-    "createdAt": "2023-07-21T10:30:27.534Z"
-  }
-}
-```
-
-### Lấy tất cả công việc
-
-**Request:**
-
-```http
-GET /api/todos
-```
-
-**Response:**
-
-```json
-{
-  "success": true,
-  "count": 1,
-  "data": [
-    {
-      "_id": "60f7b0b3e8b9a8001c9f0b3a",
-      "title": "Hoàn thành dự án Node.js",
-      "completed": false,
-      "createdAt": "2023-07-21T10:30:27.534Z"
-    }
-  ]
-}
-```
-
-## Những cải tiến cho người mới học
-
-1. **Code đơn giản:** Mã nguồn được viết rõ ràng, dễ hiểu với các bình luận hướng dẫn
-2. **Loại bỏ các thành phần phức tạp:** Không sử dụng validator.js phức tạp hoặc các schema phức tạp
-3. **Kiểm tra dữ liệu đơn giản:** Xác thực dữ liệu được thực hiện trực tiếp trong controller
-4. **Thông báo lỗi tiếng Việt:** Các thông báo lỗi được viết bằng tiếng Việt dễ hiểu
-5. **Kiến trúc rõ ràng:** Tổ chức project rõ ràng để dễ dàng hiểu và mở rộng
-
-## Dành cho người mới học
-
-Đây là một dự án tốt để học về:
-
-- Xây dựng REST API với Express
-- Tương tác với MongoDB thông qua Mongoose
-- Sử dụng EJS làm template engine
-- Xử lý sự kiện phía client với JavaScript thuần
-- Quản lý routes trong Express
-
-## License
-
-This project is licensed under the ISC License.
+- `title`: Tiêu đề công việc (String, bắt buộc)
+- `completed`: Trạng thái hoàn thành (Boolean, mặc định: false)
+- `updatedAt`: Thời gian cập nhật gần nhất (tự động tạo)
+- `createdAt`: Thời gian tạo (tự động tạo)
