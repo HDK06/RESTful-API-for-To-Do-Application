@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Dùng event delegation cho danh sách công việc
+  // Dùng event delegation cho danh sách việc
   function setupEventDelegation() {
     todoList.addEventListener("click", (e) => {
       //Nút sửa
