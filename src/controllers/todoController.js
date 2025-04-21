@@ -7,7 +7,6 @@ exports.getTodos = async (req, res, next) => {
     //200: OK, yêu cầu thành công
     res.status(200).json({
       success: true,
-      count: todos.length,
       data: todos,
     });
   } catch (error) {
