@@ -9,17 +9,32 @@
   <body>
     <div class="container">
       <div class="header">
+        <div class="header-left">
         <h1>Danh sách công việc</h1>
+          <div class="completion-status">
+            <span>Mức độ hoàn thành: </span>
+            <span id="completion-count">0</span>/<span id="total-count">0</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button id="show-add-modal-btn" class="add-btn">Thêm công việc</button>
         <button id="delete-all-btn" class="delete-all-btn">Xóa tất cả</button>
+        </div>
       </div>
 
-      <div id="add-todo-form" class="add-todo-form">
+      <div class="search-form">
         <input
           type="text"
-          id="new-todo-input"
-          placeholder="Thêm công việc mới..."
+          id="search-input"
+          placeholder="Tìm kiếm công việc..."
         />
-        <button id="submit-add-btn" class="add-btn">Thêm</button>
+        <button id="clear-search-btn" class="clear-btn" style="display: none;">✕</button>
+      </div>
+
+      <div class="filter-buttons">
+        <button class="filter-btn active" data-filter="all">Tất cả</button>
+        <button class="filter-btn" data-filter="completed">Đã hoàn thành</button>
+        <button class="filter-btn" data-filter="active">Chưa hoàn thành</button>
       </div>
 
       <ul id="todo-list" class="todo-list">
@@ -28,9 +43,20 @@
         <% } else { %> <% todos.forEach(function(todo) { %>
         <li class="todo-item" data-id="<%= todo._id %>">
           <input type="checkbox" <%= todo.completed ? 'checked' : '' %>>
-          <span class="title <%= todo.completed ? 'completed' : '' %>"
-            ><%= todo.title %></span
-          >
+          <div class="todo-main">
+            <span class="title <%= todo.completed ? 'completed' : '' %>"><%= todo.title %></span>
+            <div class="todo-meta">
+              <% if (todo.dueTime) { %>
+                <span class="due-time" data-due-time="<%= todo.dueTime %>">⏰ Hạn: <%= new Date(todo.dueTime).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' }) %></span>
+                <% if (new Date(todo.dueTime).setHours(23,59,59,999) < Date.now() && !todo.completed) { %>
+                  <span style="color: #f44336; font-weight: bold; margin-left: 8px;">Trễ hạn</span>
+                <% } %>
+              <% } %>
+              <% if (todo.remindAt && new Date(todo.remindAt) > new Date()) { %>
+                <span class="remind-at" data-remind-at="<%= todo.remindAt %>">🔔 Nhắc: <%= new Date(todo.remindAt).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' }) %></span>
+              <% } %>
+            </div>
+          </div>
           <button class="edit-btn">✏️</button>
           <button class="delete-btn">🗑️</button>
         </li>
@@ -38,6 +64,81 @@
       </ul>
     </div>
 
+    <!-- Modal thêm công việc mới -->
+    <div id="add-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Thêm công việc mới</h2>
+          <button class="close-add-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input
+            type="text"
+            id="add-todo-input"
+            placeholder="Nhập nội dung công việc..."
+          />
+          <div style="display: flex; flex-direction: column; min-width: 180px; margin-top: 10px;">
+            <label for="add-due-time-input" style="font-size: 13px; color: #4e54d6; margin-bottom: 2px;">⏰ Hạn hoàn thành</label>
+            <input
+              type="date"
+              id="add-due-time-input"
+              placeholder="Hạn hoàn thành"
+            />
+          </div>
+          <div style="display: flex; flex-direction: column; min-width: 180px; margin-top: 10px;">
+            <label for="add-remind-at-input" style="font-size: 13px; color: #f39c12; margin-bottom: 2px;">🔔 Nhắc nhở lúc</label>
+            <input
+              type="datetime-local"
+              id="add-remind-at-input"
+              placeholder="Nhắc nhở lúc"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-add-btn" class="cancel-btn">Hủy</button>
+          <button id="save-add-btn" class="save-btn">Thêm</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal sửa công việc -->
+    <div id="edit-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Sửa công việc</h2>
+          <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+          <input
+            type="text"
+            id="edit-todo-input"
+            placeholder="Nhập nội dung công việc..."
+          />
+          <div style="display: flex; flex-direction: column; min-width: 180px; margin-top: 10px;">
+            <label for="edit-due-time-input" style="font-size: 13px; color: #4e54d6; margin-bottom: 2px;">⏰ Hạn hoàn thành</label>
+            <input
+              type="date"
+              id="edit-due-time-input"
+              placeholder="Hạn hoàn thành"
+            />
+          </div>
+          <div style="display: flex; flex-direction: column; min-width: 180px; margin-top: 10px;">
+            <label for="edit-remind-at-input" style="font-size: 13px; color: #f39c12; margin-bottom: 2px;">🔔 Nhắc nhở lúc</label>
+            <input
+              type="datetime-local"
+              id="edit-remind-at-input"
+              placeholder="Nhắc nhở lúc"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel-edit-btn" class="cancel-btn">Hủy</button>
+          <button id="save-edit-btn" class="save-btn">Lưu</button>
+        </div>
+      </div>
+    </div>
+
     <script src="app.js"></script>
+    <div id="toast-container" class="toast-container"></div>
   </body>
 </html>

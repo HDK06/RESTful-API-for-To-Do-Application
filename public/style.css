@@ -34,6 +34,29 @@ body {
   background-color: #fafafa;
 }
 
+.header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.completion-status {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#completion-count {
+  color: #4e54d6;
+  font-weight: bold;
+}
+
+#total-count {
+  font-weight: bold;
+}
+
 h1 {
   color: #333;
   font-size: 24px;
@@ -57,25 +80,27 @@ h1 {
 }
 
 .add-todo-form {
-  padding: 20px 25px;
+  padding: 15px 25px;
   border-bottom: 1px solid #eee;
   display: flex;
   gap: 10px;
-  background-color: #fff;
+  background-color: #fafafa;
+  position: relative;
 }
 
 .add-todo-form input {
   flex: 1;
-  padding: 12px 15px;
+  padding: 10px 15px;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 15px;
-  transition: border-color 0.2s ease;
+  font-size: 14px;
+  transition: all 0.2s ease;
 }
 
 .add-todo-form input:focus {
   outline: none;
   border-color: #4e54d6;
+  box-shadow: 0 0 0 2px rgba(78, 84, 214, 0.1);
 }
 
 .add-btn {
@@ -87,11 +112,91 @@ h1 {
   cursor: pointer;
   font-weight: 500;
   transition: all 0.2s ease;
+  height: 38px;
 }
 
 .add-btn:hover {
   background-color: #3a3fbc;
   transform: translateY(-1px);
+}
+
+.search-form {
+  padding: 15px 25px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  gap: 10px;
+  background-color: #fafafa;
+  position: relative;
+}
+
+.search-form input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.search-form input:focus {
+  outline: none;
+  border-color: #4e54d6;
+  box-shadow: 0 0 0 2px rgba(78, 84, 214, 0.1);
+}
+
+.clear-btn {
+  position: absolute;
+  right: 35px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 5px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  height: 28px;
+  width: 28px;
+}
+
+.clear-btn:hover {
+  background-color: #eee;
+  color: #333;
+}
+
+.filter-buttons {
+  padding: 10px 25px;
+  display: flex;
+  gap: 10px;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-btn {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: #4e54d6;
+  color: #4e54d6;
+}
+
+.filter-btn.active {
+  background-color: #4e54d6;
+  color: white;
+  border-color: #4e54d6;
 }
 
 .todo-list {
@@ -166,6 +271,130 @@ h1 {
   color: #f44336;
 }
 
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #333;
+}
+
+.close-modal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.close-modal:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.modal-body input {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.modal-body input:focus {
+  outline: none;
+  border-color: #4e54d6;
+  box-shadow: 0 0 0 2px rgba(78, 84, 214, 0.1);
+}
+
+.modal-footer {
+  padding: 15px 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancel-btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #f5f5f5;
+  border-color: #ccc;
+}
+
+.save-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4e54d6;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.save-btn:hover {
+  background-color: #3a3fbc;
+}
+
 /* Responsive adjustments */
 @media (max-width: 640px) {
   body {
@@ -195,5 +424,109 @@ h1 {
 
   .todo-item {
     padding: 12px 20px;
+  }
+}
+
+.todo-main {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.todo-meta {
+  font-size: 13px;
+  color: #888;
+  margin-top: 2px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.due-time {
+  color: #4e54d6;
+}
+
+.remind-at {
+  color: #f39c12;
+}
+
+/* Toast Notification */
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  background-color: #333;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-width: 300px;
+  max-width: 400px;
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.toast.success {
+  background-color: #4CAF50;
+}
+
+.toast.error {
+  background-color: #f44336;
+}
+
+.toast.warning {
+  background-color: #ff9800;
+}
+
+.toast.info {
+  background-color: #2196F3;
+}
+
+.toast-message {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.toast-close {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.toast-close:hover {
+  opacity: 1;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
   }
 }
